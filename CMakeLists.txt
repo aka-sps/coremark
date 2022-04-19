@@ -78,6 +78,4 @@ add_custom_target(
 
 add_custom_target(
   run ALL
-  COMMAND @echo "Check run1.log and run2.log for results."
-  COMMAND @echo "See README.md for run and reporting rules."
   DEPENDS run_performance run_validation)
