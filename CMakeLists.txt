@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.13)
 
 project(coremark C)
 
-if(CMAKE_SYSTEM_NAME MATCHES "^(CYGWIN|Darwin|FreeBSD|Linux)\$")
+message("CMAKE_SYSTEM_PROCESSOR=${CMAKE_SYSTEM_PROCESSOR} CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}")
+
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^riscv64\$" AND CMAKE_SYSTEM_NAME MATCHES "^Linux\$")
+  add_subdirectory(rv64-linux)
+elseif(CMAKE_SYSTEM_NAME MATCHES "^(CYGWIN|Darwin|FreeBSD|Linux)\$")
   add_subdirectory(posix)
 else()
   message(
