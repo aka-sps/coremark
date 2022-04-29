@@ -2,18 +2,18 @@ cmake_minimum_required(VERSION 3.13)
 
 project(coremark C)
 
-message("CMAKE_SYSTEM_PROCESSOR=${CMAKE_SYSTEM_PROCESSOR} CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}")
-
+if(PORT_DIR)
+  add_subdirectory(${PORT_DIR})
+else(PORT_DIR)
+  # message("CMAKE_SYSTEM_PROCESSOR=${CMAKE_SYSTEM_PROCESSOR} CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}")
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "^riscv64\$" AND CMAKE_SYSTEM_NAME MATCHES "^Linux\$")
   add_subdirectory(rv64-linux)
 elseif(CMAKE_SYSTEM_NAME MATCHES "^(CYGWIN|Darwin|FreeBSD|Linux)\$")
   add_subdirectory(posix)
 else()
-  message(
-    SEND_ERROR
-      "PLEASE define PORT_DIR! (e.g. make PORT_DIR=simple) for CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}"
-  )
+    message(SEND_ERROR "PLEASE define PORT_DIR! (e.g. make PORT_DIR=simple) for CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}")
 endif()
+endif(PORT_DIR)
 
 set(MEM_METHOD
     STATIC
