@@ -9,6 +9,15 @@ project(coremark
   LANGUAGES C
 )
 
+if(NOT CMAKE_HOST_WIN32 AND CMAKE_COMPILER_IS_GNUCC)
+  find_program(CCACHE_FOUND ccache)
+
+  if(CCACHE_FOUND)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache) # Less useful to do it for linking, see edit2
+  endif(CCACHE_FOUND)
+endif(NOT CMAKE_HOST_WIN32 AND CMAKE_COMPILER_IS_GNUCC)
+
 # Configuarble build parameters
 set(ITERATIONS 0 CACHE STRING "ITERATIONS")
 set(MEM_METHOD STATIC CACHE STRING "MEM_METHOD")
