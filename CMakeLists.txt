@@ -74,6 +74,11 @@ endforeach()
 target_compile_definitions(${PROJECT_NAME}_1 PUBLIC PERFORMANCE_RUN=1)
 target_compile_definitions(${PROJECT_NAME}_2 PUBLIC VALIDATION_RUN=1)
 
+add_custom_target(check
+    md5sum -c coremark.md5
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 if(CMAKE_CROSSCOMPILING)
     return()
 endif(CMAKE_CROSSCOMPILING)
@@ -105,10 +110,6 @@ add_custom_target(print_performance
 add_custom_target(print_validation DEPENDS print_performance ${CMAKE_CURRENT_BINARY_DIR}/run2.log)
 add_custom_target(gen_pgo_data DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/run3.log)
 
-add_custom_target(check
-    md5sum -c coremark.md5
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
 add_custom_target(run ALL
     ${CMAKE_COMMAND} -E echo "Check run1.log and run2.log for results."
     DEPENDS print_performance print_validation
