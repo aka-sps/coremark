@@ -34,6 +34,7 @@
                 },
                 {
                         "name": "hifive",
+                        "displayName": "Best for HiFive",
                         "inherits": [
                                 "ninja"
                         ],
@@ -59,10 +60,6 @@
                         "binaryDir": "${sourceDir}/.build/${presetName}",
                         "hidden": true,
                         "cacheVariables": {
-                                "CMAKE_BUILD_TYPE": {
-                                        "type": "STRING",
-                                        "value": "Release"
-                                },
                                 "CMAKE_CROSSCOMPILING": {
                                         "type": "INTERNAL",
                                         "value": "ON"
@@ -99,6 +96,10 @@
                         "name": "ninja",
                         "configurePreset": "ninja",
                         "jobs": 0
+                },
+                {
+                        "name": "hifive",
+                        "configurePreset": "hifive"
                 }
         ]
 }
