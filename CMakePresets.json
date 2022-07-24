@@ -1,0 +1,104 @@
+{
+        "version": 3,
+        "cmakeMinimumRequired": {
+                "major": 3,
+                "minor": 22,
+                "patch": 0
+        },
+        "configurePresets": [
+                {
+                        "name": "default",
+                        "displayName": "Default Config",
+                        "description": "Default build",
+                        "binaryDir": "${sourceDir}/.build/${hostSystemName}",
+                        "cacheVariables": {
+                                "CMAKE_BUILD_TYPE": {
+                                        "type": "STRING",
+                                        "value": "Release"
+                                },
+                                "MEM_METHOD": {
+                                        "type": "STRING",
+                                        "value": "STACK"
+                                }
+                        }
+                },
+                {
+                        "name": "ninja",
+                        "inherits": [
+                                "default"
+                        ],
+                        "displayName": "Default Config Ninja",
+                        "description": "Default build Ninja",
+                        "binaryDir": "${sourceDir}/.build/${hostSystemName}-${generator}",
+                        "generator": "Ninja"
+                },
+                {
+                        "name": "hifive",
+                        "inherits": [
+                                "ninja"
+                        ],
+                        "binaryDir": "${sourceDir}/.build/${presetName}",
+                        "cacheVariables": {
+                                "CMAKE_C_FLAGS": {
+                                        "type": "STRING",
+                                        "value": "-mstrict-align -malign-data=natural -fno-common -ffast-math"
+                                },
+                                "CMAKE_C_FLAGS_RELEASE": {
+                                        "type": "STRING",
+                                        "value": "-O3 -DNDEBUG -mcpu=sifive-u74 -funroll-loops -finline-functions -finline-functions-called-once -fomit-frame-pointer -foptimize-sibling-calls -falign-functions=16 -falign-jumps=16 -fgcse-las -fgcse-sm -fpeel-loops -fsched-spec-load --param inline-min-speedup=4 --param max-inline-insns-auto=18 --param max-inline-insns-single=450"
+                                }
+                        }
+                },
+                {
+                        "name": "riscv64-linux",
+                        "displayName": "Default Config riscv64-linux",
+                        "inherits": [
+                                "ninja",
+                                "hifive"
+                        ],
+                        "binaryDir": "${sourceDir}/.build/${presetName}",
+                        "hidden": true,
+                        "cacheVariables": {
+                                "CMAKE_BUILD_TYPE": {
+                                        "type": "STRING",
+                                        "value": "Release"
+                                },
+                                "CMAKE_CROSSCOMPILING": {
+                                        "type": "INTERNAL",
+                                        "value": "ON"
+                                },
+                                "CMAKE_SYSTEM_NAME": "Linux",
+                                "CMAKE_SYSTEM_PROCESSOR": "riscv",
+                                "CMAKE_FIND_ROOT_PATH": "$env{CROSS_PATH}",
+                                "CMAKE_C_COMPILER": {
+                                        "type": "FILEPATH",
+                                        "value": "$env{CROSS_PATH}/riscv64-unknown-linux-gnu-gcc"
+                                },
+                                "CMAKE_CXX_COMPILER": {
+                                        "type": "FILEPATH",
+                                        "value": "$env{CROSS_PATH}/riscv64-unknown-linux-gnu-g++"
+                                },
+                                "CMAKE_OBJDUMP": {
+                                        "type": "FILEPATH",
+                                        "value": "$env{CROSS_PATH}/riscv64-unknown-linux-gnu-objdump"
+                                },
+                                "CMAKE_OBJCOPY": {
+                                        "type": "FILEPATH",
+                                        "value": "$env{CROSS_PATH}/riscv64-unknown-linux-gnu-objcopy"
+                                }
+                        }
+                }
+        ]
+        ,
+        "buildPresets": [
+                {
+                        "name": "default",
+                        "configurePreset": "default"
+                },
+                {
+                        "name": "ninja",
+                        "configurePreset": "ninja",
+                        "jobs": 0
+                }
+        ]
+}
