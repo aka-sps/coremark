@@ -70,6 +70,20 @@ foreach(stage 1 2 3)
     target_link_libraries(${PROJECT_NAME}_${stage} PUBLIC ${PROJECT_NAME})
 endforeach()
 
+if(CMAKE_OBJDUMP)
+    set(CMAKE_OBJDUMP_FLAGS "-wxCpS" CACHE STRING "objdump options")
+
+    function(add_dump target)
+        add_custom_command(
+            TARGET ${target} POST_BUILD
+            COMMAND ${CMAKE_OBJDUMP} ${CMAKE_OBJDUMP_FLAGS} $<TARGET_FILE:${target}> > $<TARGET_FILE_BASE_NAME:${target}>.dump
+        )
+        set_property(TARGET ${target} APPEND PROPERTY ADDITIONAL_CLEAN_FILES $<TARGET_FILE_BASE_NAME:${target}>.dump)
+    endfunction(add_dump)
+
+    add_dump(${PROJECT_NAME}_1)
+endif(CMAKE_OBJDUMP)
+
 # private compile definitions
 target_compile_definitions(${PROJECT_NAME}_1 PUBLIC PERFORMANCE_RUN=1)
 target_compile_definitions(${PROJECT_NAME}_2 PUBLIC VALIDATION_RUN=1)
