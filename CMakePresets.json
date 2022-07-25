@@ -47,19 +47,6 @@
                                         "value": "-O3 -DNDEBUG -funroll-loops -finline-functions -finline-functions-called-once -fomit-frame-pointer -foptimize-sibling-calls -falign-functions=16 -falign-jumps=16 -fgcse-las -fgcse-sm -fpeel-loops -fsched-spec-load --param inline-min-speedup=4 --param max-inline-insns-auto=18 --param max-inline-insns-single=450"
                                 }
                         }
-                },
-                {
-                        "name": "riscv-linux",
-                        "displayName": "Default Config riscv-linux",
-                        "inherits": [
-                                "ninja",
-                                "hifive"
-                        ],
-                        "binaryDir": "${sourceDir}/.build/${presetName}",
-                        "hidden": true,
-                        "cacheVariables": {
-                                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/toolchain-riscv-linux.cmake"
-                        }
                 }
         ],
         "buildPresets": [
