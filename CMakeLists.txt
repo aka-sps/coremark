@@ -9,6 +9,8 @@ project(coremark
     LANGUAGES C
 )
 
+enable_testing()
+
 if(NOT CMAKE_HOST_WIN32 AND CMAKE_COMPILER_IS_GNUCC)
     find_program(CCACHE_FOUND ccache)
 
@@ -127,4 +129,11 @@ add_custom_target(gen_pgo_data DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/run3.log)
 add_custom_target(run ALL
     ${CMAKE_COMMAND} -E echo "Check run1.log and run2.log for results."
     DEPENDS print_performance print_validation
+)
+
+add_test(NAME performance
+    COMMAND $<TARGET_FILE:${PROJECT_NAME}_1> 0x0 0x0 0x66 ${ITERATIONS} 7 1 2000
+)
+add_test(NAME validation
+    COMMAND $<TARGET_FILE:${PROJECT_NAME}_2> 0x3415 0x3415 0x66 ${ITERATIONS} 7 1 2000
 )
