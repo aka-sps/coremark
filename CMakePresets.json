@@ -23,9 +23,7 @@
                 },
                 {
                         "name": "ninja",
-                        "inherits": [
-                                "default"
-                        ],
+                        "inherits": "default",
                         "displayName": "Default Config Ninja",
                         "binaryDir": "${sourceDir}/.build/${hostSystemName}-${generator}",
                         "generator": "Ninja"
@@ -33,9 +31,7 @@
                 {
                         "name": "hifive",
                         "displayName": "Best for HiFive",
-                        "inherits": [
-                                "ninja"
-                        ],
+                        "inherits": "ninja",
                         "binaryDir": "${sourceDir}/.build/${presetName}",
                         "cacheVariables": {
                                 "CMAKE_C_FLAGS": {
@@ -56,13 +52,26 @@
                 },
                 {
                         "name": "ninja",
-                        "configurePreset": "ninja",
-                        "jobs": 0
+                        "configurePreset": "ninja"
                 },
                 {
                         "name": "hifive",
                         "inherits": "ninja",
                         "configurePreset": "hifive"
+                }
+        ],
+        "testPresets": [
+                {
+                        "name": "default",
+                        "configurePreset": "default",
+                        "output": {
+                                "verbosity": "verbose"
+                        }
+                },
+                {
+                        "name": "ninja",
+                        "configurePreset": "ninja",
+                        "inherits": "default"
                 }
         ]
 }
