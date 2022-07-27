@@ -7,9 +7,33 @@
         },
         "configurePresets": [
                 {
-                        "name": "default",
-                        "displayName": "Default Config",
-                        "binaryDir": "${sourceDir}/.build/${hostSystemName}",
+                        "name": "win",
+                        "hidden": true,
+                        "condition": {
+                                "type": "equals",
+                                "lhs": "${hostSystemName}",
+                                "rhs": "Windows"
+                        },
+                        "cacheVariables": {
+                                "CMAKE_HOST_EXECUTABLE_SUFFIX": ".exe"
+                        }
+                },
+                {
+                        "name": "not-win",
+                        "hidden": true,
+                        "condition": {
+                                "type": "not",
+                                "condition": {
+                                        "type": "equals",
+                                        "lhs": "${hostSystemName}",
+                                        "rhs": "Windows"
+                                }
+                        }
+                },
+                {
+                        "name": "default-settings",
+                        "hidden": true,
+                        "binaryDir": "${sourceDir}/.build/${presetName}",
                         "cacheVariables": {
                                 "CMAKE_BUILD_TYPE": {
                                         "type": "STRING",
@@ -22,17 +46,40 @@
                         }
                 },
                 {
-                        "name": "ninja",
-                        "inherits": "default",
-                        "displayName": "Default Config Ninja",
-                        "binaryDir": "${sourceDir}/.build/${hostSystemName}-${generator}",
+                        "name": "ninja-generator",
+                        "hidden": true,
                         "generator": "Ninja"
                 },
                 {
-                        "name": "hifive",
-                        "displayName": "Best for HiFive",
-                        "inherits": "ninja",
-                        "binaryDir": "${sourceDir}/.build/${presetName}",
+                        "name": "makefile",
+                        "inherits": [
+                                "not-win",
+                                "default-settings"
+                        ]
+                },
+                {
+                        "name": "MSVC-2022",
+                        "generator": "Visual Studio 17 2022",
+                        "inherits": [
+                                "win",
+                                "default-settings"
+                        ]
+                },
+                {
+                        "name": "ninja",
+                        "inherits": [
+                                "not-win",
+                                "default-settings",
+                                "ninja-generator"
+                        ]
+                },
+                {
+                        "name": "hifive-best",
+                        "hidden": true,
+                        "inherits": [
+                                "default-settings",
+                                "ninja-generator"
+                        ],
                         "cacheVariables": {
                                 "CMAKE_C_FLAGS": {
                                         "type": "STRING",
@@ -43,12 +90,43 @@
                                         "value": "-O3 -DNDEBUG -funroll-loops -finline-functions -finline-functions-called-once -fomit-frame-pointer -foptimize-sibling-calls -falign-functions=16 -falign-jumps=16 -fgcse-las -fgcse-sm -fpeel-loops -fsched-spec-load --param inline-min-speedup=4 --param max-inline-insns-auto=18 --param max-inline-insns-single=450"
                                 }
                         }
+                },
+                {
+                        "name": "hifive",
+                        "displayName": "HiFive native",
+                        "inherits": [
+                                "hifive-best",
+                                "not-win"
+                        ]
+                },
+                {
+                        "name": "cross-riscv-linux",
+                        "hidden": true,
+                        "inherits": "hifive-best",
+                        "toolchainFile": "toolchain-riscv-linux.cmake"
+                },
+                {
+                        "name": "cross-riscv-linux-gcc-7.1.1",
+                        "hidden": true,
+                        "inherits": [
+                                "cross-riscv-linux"
+                        ],
+                        "cacheVariables": {
+                                "CMAKE_C_FLAGS": {
+                                        "type": "STRING",
+                                        "value": "-march=rv64imafdc -mabi=lp64d -mstrict-align -fno-common -ffast-math"
+                                },
+                                "CMAKE_EXE_LINKER_FLAGS": {
+                                        "type": "STRING",
+                                        "value": "-static -lpthread"
+                                }
+                        }
                 }
         ],
         "buildPresets": [
                 {
-                        "name": "default",
-                        "configurePreset": "default"
+                        "name": "makefile",
+                        "configurePreset": "makefile"
                 },
                 {
                         "name": "ninja",
@@ -56,14 +134,19 @@
                 },
                 {
                         "name": "hifive",
-                        "inherits": "ninja",
-                        "configurePreset": "hifive"
+                        "configurePreset": "hifive",
+                        "inherits": "ninja"
+                },
+                {
+                        "name": "MSVC-2022",
+                        "configurePreset": "MSVC-2022",
+                        "configuration": "Release"
                 }
         ],
         "testPresets": [
                 {
-                        "name": "default",
-                        "configurePreset": "default",
+                        "name": "makefile",
+                        "configurePreset": "makefile",
                         "output": {
                                 "verbosity": "verbose"
                         }
@@ -71,7 +154,12 @@
                 {
                         "name": "ninja",
                         "configurePreset": "ninja",
-                        "inherits": "default"
+                        "inherits": "makefile"
+                },
+                {
+                        "name": "MSVC-2022",
+                        "configurePreset": "MSVC-2022",
+                        "configuration": "Release"
                 }
-        ]
+       ]
 }
