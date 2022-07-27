@@ -1,0 +1,107 @@
+{
+        "version": 3,
+        "cmakeMinimumRequired": {
+                "major": 3,
+                "minor": 22,
+                "patch": 0
+        },
+        "configurePresets": [
+                {
+                        "name": "riscv-linux-gcc-7.1.1",
+                        "inherits": [
+                                "cross-riscv-linux-gcc-7.1.1",
+                                "not-win"
+                        ],
+                        "environment": {
+                                "CROSS_PATH": "/opt/syntacore/riscv-gcc-7.1.1/bin"
+                        }
+                },
+                {
+                        "name": "riscv-linux-gcc-7.1.1-win",
+                        "inherits": [
+                                "cross-riscv-linux-gcc-7.1.1",
+                                "win"
+                        ],
+                        "environment": {
+                                "CROSS_PATH": "c:/cygwin64/opt/syntacore/riscv-gcc-7.1.1/bin"
+                        }
+                },
+                {
+                        "name": "riscv-linux-gcc-11.2",
+                        "inherits": [
+                                "cross-riscv-linux",
+                                "not-win"
+                        ],
+                        "environment": {
+                                "CROSS_PATH": "/opt/syntacore/sc-ide/riscv-gcc/bin"
+                        }
+                },
+                {
+                        "name": "riscv-linux-gcc-11.2-win",
+                        "inherits": [
+                                "cross-riscv-linux",
+                                "win"
+                        ],
+                        "environment": {
+                                "CROSS_PATH": "c:/cygwin64/opt/syntacore/sc-ide/riscv-gcc/bin"
+                        }
+                },
+                {
+                        "name": "riscv-linux-gcc-12.1",
+                        "inherits": [
+                                "cross-riscv-linux",
+                                "not-win"
+                        ],
+                        "environment": {
+                                "CROSS_PATH": "/opt/syntacore/riscv-gcc-12.1/bin"
+                        }
+                },
+                {
+                        "name": "riscv-linux-gcc-12.1-win",
+                        "inherits": [
+                                "cross-riscv-linux",
+                                "win"
+                        ],
+                        "environment": {
+                                "CROSS_PATH": "c:/cygwin64/opt/syntacore/riscv-gcc-12.1/bin"
+                        }
+                }
+        ],
+        "buildPresets": [
+                {
+                        "name": "cross",
+                        "hidden": true,
+                        "targets":"coremark_1"
+                },
+                {
+                        "name": "riscv-linux-gcc-7.1.1",
+                        "configurePreset": "riscv-linux-gcc-7.1.1",
+                        "inherits":"cross"
+                },
+                {
+                        "name": "riscv-linux-gcc-7.1.1-win",
+                        "configurePreset": "riscv-linux-gcc-7.1.1-win",
+                        "inherits":"cross"
+                },
+                {
+                        "name": "riscv-linux-gcc-11.2",
+                        "configurePreset": "riscv-linux-gcc-11.2",
+                        "inherits":"cross"
+                },
+                {
+                        "name": "riscv-linux-gcc-11.2-win",
+                        "configurePreset": "riscv-linux-gcc-11.2-win",
+                        "inherits":"cross"
+                },
+                {
+                        "name": "riscv-linux-gcc-12.1",
+                        "configurePreset": "riscv-linux-gcc-12.1",
+                        "inherits":"cross"
+                },
+                {
+                        "name": "riscv-linux-gcc-12.1-win",
+                        "configurePreset": "riscv-linux-gcc-12.1-win",
+                        "inherits":"cross"
+                }
+        ]
+}
