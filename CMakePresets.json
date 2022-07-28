@@ -7,6 +7,25 @@
         },
         "configurePresets": [
                 {
+                        "name": "default-settings",
+                        "hidden": true,
+                        "binaryDir": "${sourceDir}/.build/${presetName}",
+                        "cacheVariables": {
+                                "CMAKE_BUILD_TYPE": {
+                                        "type": "STRING",
+                                        "value": "Release"
+                                },
+                                "MEM_METHOD": {
+                                        "type": "STRING",
+                                        "value": "STACK"
+                                }
+                        }
+                },
+                {
+                        "name": "default",
+                        "inherits": "default-settings"
+                },
+                {
                         "name": "win",
                         "hidden": true,
                         "condition": {
@@ -31,24 +50,9 @@
                         }
                 },
                 {
-                        "name": "default-settings",
-                        "hidden": true,
-                        "binaryDir": "${sourceDir}/.build/${presetName}",
-                        "cacheVariables": {
-                                "CMAKE_BUILD_TYPE": {
-                                        "type": "STRING",
-                                        "value": "Release"
-                                },
-                                "MEM_METHOD": {
-                                        "type": "STRING",
-                                        "value": "STACK"
-                                }
-                        }
-                },
-                {
                         "name": "ninja-generator",
                         "hidden": true,
-                        "generator": "Ninja"
+                        "generator": "Ninja Multi-Config"
                 },
                 {
                         "name": "makefile",
@@ -63,7 +67,11 @@
                         "inherits": [
                                 "win",
                                 "default-settings"
-                        ]
+                        ],
+                        "cacheVariables": {
+                                "CMAKE_C_FLAGS_RELEASE": "/DNDEBUG /MD /O2 /Ob2 /Oi /Ot /Oy /fp:fast /GL",
+                                "CMAKE_EXE_LINKER_FLAGS_RELEASE": "/LTCG"
+                        }
                 },
                 {
                         "name": "ninja",
@@ -125,12 +133,18 @@
         ],
         "buildPresets": [
                 {
+                        "name": "default",
+                        "configurePreset": "default",
+                        "configuration": "Release"
+                },
+                {
                         "name": "makefile",
                         "configurePreset": "makefile"
                 },
                 {
                         "name": "ninja",
-                        "configurePreset": "ninja"
+                        "configurePreset": "ninja",
+                        "configuration": "Release"
                 },
                 {
                         "name": "hifive",
@@ -149,7 +163,8 @@
                         "configurePreset": "makefile",
                         "output": {
                                 "verbosity": "verbose"
-                        }
+                        },
+                        "configuration": "Release"
                 },
                 {
                         "name": "ninja",
@@ -161,5 +176,5 @@
                         "configurePreset": "MSVC-2022",
                         "configuration": "Release"
                 }
-       ]
+        ]
 }
