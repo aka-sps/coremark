@@ -32,9 +32,6 @@
                                 "type": "equals",
                                 "lhs": "${hostSystemName}",
                                 "rhs": "Windows"
-                        },
-                        "cacheVariables": {
-                                "CMAKE_HOST_EXECUTABLE_SUFFIX": ".exe"
                         }
                 },
                 {
