@@ -111,7 +111,7 @@
                         "name": "cross-riscv-linux",
                         "hidden": true,
                         "inherits": "hifive-best",
-                        "toolchainFile": "toolchain-riscv-linux.cmake"
+                        "toolchainFile": "riscv/toolchain-riscv-linux.cmake"
                 },
                 {
                         "name": "cross-riscv-linux-gcc-7.1.1",
